@@ -1,41 +1,26 @@
 package mbaas.com.nifcloud.androidsegmentuserapp
 
-
 import android.app.Activity
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.nifcloud.mbaas.core.NCMBUser
+import kotlinx.android.synthetic.main.activity_signup.*
 
 /**
  * 新規ユーザー登録
  */
 class SignupActivity : AppCompatActivity() {
 
-    @BindView(R.id.input_name)
-    lateinit var _nameText: EditText
-    @BindView(R.id.input_password)
-    lateinit var _passwordText: EditText
-    @BindView(R.id.btn_signup)
-    lateinit var _signupButton: Button
-    @BindView(R.id.link_login)
-    lateinit var _loginLink: TextView
-
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
-        ButterKnife.bind(this)
 
-        _signupButton!!.setOnClickListener { signup() }
+        btn_signup.setOnClickListener { signup() }
 
-        _loginLink!!.setOnClickListener {
+        link_login.setOnClickListener {
             // Finish the registration screen and return to the Login activity
             setResult(Activity.RESULT_CANCELED, intent)
             finish()
@@ -50,7 +35,7 @@ class SignupActivity : AppCompatActivity() {
             return
         }
 
-        _signupButton!!.isEnabled = false
+        btn_signup.isEnabled = false
 
         val progressDialog = ProgressDialog(this@SignupActivity,
                 R.style.AppTheme_Dark_Dialog)
@@ -58,8 +43,8 @@ class SignupActivity : AppCompatActivity() {
         progressDialog.setMessage("Creating Account...")
         progressDialog.show()
 
-        val name = _nameText!!.text.toString()
-        val password = _passwordText!!.text.toString()
+        val name = input_name.text.toString()
+        val password = input_password.text.toString()
 
         // TODO: Implement your own signup logic here.
         //NCMBUserのインスタンスを作成
@@ -89,7 +74,7 @@ class SignupActivity : AppCompatActivity() {
 
 
     fun onSignupSuccess() {
-        _signupButton!!.isEnabled = true
+        btn_signup.isEnabled = true
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
@@ -97,27 +82,27 @@ class SignupActivity : AppCompatActivity() {
     fun onSignupFailed() {
         Toast.makeText(baseContext, "Login failed", Toast.LENGTH_LONG).show()
 
-        _signupButton!!.isEnabled = true
+        btn_signup.isEnabled = true
     }
 
     fun validate(): Boolean {
         var valid = true
 
-        val name = _nameText!!.text.toString()
-        val password = _passwordText!!.text.toString()
+        val name = input_name.text.toString()
+        val password = input_password.text.toString()
 
         if (name.isEmpty() || name.length < 3) {
-            _nameText!!.error = "at least 3 characters"
+            input_name.error = "at least 3 characters"
             valid = false
         } else {
-            _nameText!!.error = null
+            input_name.error = null
         }
 
         if (password.isEmpty() || password.length < 4 || password.length > 10) {
-            _passwordText!!.error = "between 4 and 10 alphanumeric characters"
+            input_password.error = "between 4 and 10 alphanumeric characters"
             valid = false
         } else {
-            _passwordText!!.error = null
+            input_password.error = null
         }
 
         return valid
