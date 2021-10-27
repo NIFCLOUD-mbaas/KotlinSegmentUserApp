@@ -14,8 +14,8 @@
 ![画像02](/readme-img/002.png)
 
 ## 動作環境
-* Windows 7 Professional
-* Android Studio 3.1
+* MacOS Big Sur 11.6 
+* Android Studio Arctic Fox 2020.3.1
 * Android ver 4x以上
 * Android SDK v3
   - SDK v2系だと動作しないので注意
