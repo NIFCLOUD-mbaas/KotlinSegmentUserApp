@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
+import com.nifcloud.mbaas.core.NCMBException
 import com.nifcloud.mbaas.core.NCMBUser
 import kotlinx.android.synthetic.main.activity_signup.*
 
@@ -52,23 +53,23 @@ class SignupActivity : AppCompatActivity() {
         //ユーザ名を設定
         user.userName = name
         //パスワードを設定
-        user.setPassword(password)
+        user.password = password
         //設定したユーザ名とパスワードで会員登録を行う
-        user.signUpInBackground { e ->
-            if (e != null) {
-                //会員登録時にエラーが発生した場合の処理
-                onSignupFailed()
-                progressDialog.dismiss()
-            } else {
-                android.os.Handler().postDelayed(
-                        {
-                            // On complete call either onSignupSuccess or onSignupFailed
-                            // depending on success
-                            onSignupSuccess()
-                            // onSignupFailed();
-                            progressDialog.dismiss()
-                        }, 3000)
-            }
+        try {
+            user.signUp()
+            android.os.Handler().postDelayed(
+                {
+                    // On complete call either onSignupSuccess or onSignupFailed
+                    // depending on success
+                    onSignupSuccess()
+                    // onSignupFailed();
+                    progressDialog.dismiss()
+                }, 3000)
+        }
+        catch(e: NCMBException){
+            //会員登録時にエラーが発生した場合の処理
+            onSignupFailed()
+            progressDialog.dismiss()
         }
     }
 
