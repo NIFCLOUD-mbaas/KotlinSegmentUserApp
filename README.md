@@ -17,8 +17,7 @@
 * Windows 7 Professional
 * Android Studio 3.1
 * Android ver 4x以上
-* Android SDK v3
-  - SDK v2系だと動作しないので注意
+* Android SDK v0.1.1
 
 ※上記内容で動作確認をしています
 
@@ -138,28 +137,31 @@ val user = NCMBUser()
 //ユーザ名を設定
 user.userName = name
 //パスワードを設定
-user.setPassword(password)
+user.password = password
 //設定したユーザ名とパスワードで会員登録を行う
-user.signUpInBackground { e ->
-    if (e != null) {
-        // 新規登録失敗時の処理
-    } else {
-        // 新規登録成功時の処理
-    }
-    }
-});
+try {
+    user.signUp()
+    
+}
+catch(e: NCMBException){
+    //会員登録時にエラーが発生した場合の処理
+}
 ```
 
 ### ログイン
 `LoginActivity.kt`
 
 ```kotlin
-NCMBUser.loginInBackground(name, password) { user, e ->
-    if (e != null) {
-        // ログイン失敗時の処理
-    } else {
-        // ログイン成功時の処理
-    }
+try {
+    var user = NCMBUser()
+    user.userName = name
+    user.password = password
+
+    user.login(user.userName,user.password)
+    // ログイン成功時の処理
+
+} catch (e: NCMBException) {
+    // ログイン失敗時の処理
 }
 ```
 
@@ -168,15 +170,15 @@ NCMBUser.loginInBackground(name, password) { user, e ->
 
 ```kotlin
 // カレントユーザ情報の取得
-val userInfo = NCMBUser.getCurrentUser()
-
-userInfo.fetchInBackground { userObject, e ->
-    if (e != null) {
-        // ユーザー情報の取得が失敗した場合の処理
-    } else {
-        // ユーザー情報の取得が成功した場合の処理
-    }
+val user = NCMBUser()
+val userInfo = user.getCurrentUser()
+try {
+    var rs = userInfo.fetch();
+    // ユーザー情報の取得が成功した場合の処理
+} catch(e:NCMBException){
+  // ユーザー情報の取得が失敗した場合の処理
 }
+
 ```
 
 ## 参考
