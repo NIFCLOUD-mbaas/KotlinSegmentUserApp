@@ -17,7 +17,7 @@
 * Windows 7 Professional
 * Android Studio 3.1
 * Android ver 4x以上
-* Android SDK v0.1.1
+* Kotlin SDK v0.1.1
 
 ※上記内容で動作確認をしています
 
