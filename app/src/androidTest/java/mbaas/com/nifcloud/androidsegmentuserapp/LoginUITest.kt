@@ -14,10 +14,13 @@ import mbaas.com.nifcloud.androidsegmentuserapp.MainActivity
 import mbaas.com.nifcloud.androidsegmentuserapp.R
 import mbaas.com.nifcloud.androidsegmentuserapp.Utils.waitFor
 import org.junit.Before
+import org.junit.FixMethodOrder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class LoginUITest {
@@ -42,7 +45,7 @@ class LoginUITest {
     }
 
     @Test
-    fun initialScreen() {
+    fun test01_initialScreen() {
         ivLogo!!.check(matches(isDisplayed()))
         edtName!!.check(matches(isDisplayed()))
         edtPass!!.check(matches(isDisplayed()))
@@ -51,7 +54,7 @@ class LoginUITest {
     }
 
     @Test
-    fun validate_user_name() {
+    fun test02_validate_user_name() {
         edtName!!.perform(typeText(""))
         edtPass!!.perform(typeText("123456"), closeSoftKeyboard())
         btnLogin!!.perform(scrollTo()).perform(click())
@@ -59,7 +62,7 @@ class LoginUITest {
     }
 
     @Test
-    fun validate_empty_pass() {
+    fun test03_validate_empty_pass() {
         edtName!!.perform(typeText("Hoge"))
         edtPass!!.perform(typeText(""), closeSoftKeyboard())
         btnLogin!!.perform(scrollTo()).perform(click())
@@ -67,7 +70,7 @@ class LoginUITest {
     }
 
     @Test
-    fun validate_less_pass_length() {
+    fun test04_validate_less_pass_length() {
         edtName!!.perform(typeText("Hoge"))
         edtPass!!.perform(typeText("123"), closeSoftKeyboard())
         btnLogin!!.perform(scrollTo()).perform(click())
@@ -75,7 +78,7 @@ class LoginUITest {
     }
 
     @Test
-    fun validate_over_pass_length() {
+    fun test05_validate_over_pass_length() {
         edtName!!.perform(typeText("Hoge"))
         edtPass!!.perform(typeText("12345678901"), closeSoftKeyboard())
         btnLogin!!.perform(scrollTo()).perform(click())
@@ -83,13 +86,13 @@ class LoginUITest {
     }
 
     @Test
-    fun openSignup() {
+    fun test06_openSignup() {
         tvLinkSignup!!.perform(scrollTo()).perform(click())
         onView(withId(R.id.btn_signup)).check(matches(withText("Create Account")))
     }
 
     @Test
-    fun doLogin() {
+    fun test07_doLogin() {
         edtName!!.perform(typeText("ANTHOD"))
         edtPass!!.perform(typeText("123456"), closeSoftKeyboard())
         btnLogin!!.perform(scrollTo()).perform(click())

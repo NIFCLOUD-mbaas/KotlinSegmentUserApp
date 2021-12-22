@@ -30,7 +30,7 @@ class CustomAdapter(private val context: Context, userObject: NCMBObject) : Base
     }
 
     override fun getCount(): Int {
-        return userObject!!.allKeys().size
+        return userObject!!.mFields.length();
     }
 
     override fun getItem(position: Int): Any? {
@@ -65,7 +65,7 @@ class CustomAdapter(private val context: Context, userObject: NCMBObject) : Base
         //Viewにセットする
         vi.tag = holder
 
-        val keyName = userObject!!.allKeys()[position].toString().trim { it <= ' ' } as String
+        val keyName = userObject!!.mFields.names().getString(position)
         val valName = userObject!!.getString(keyName) as Any
 
         holder.item_key!!.text = keyName //keyの値

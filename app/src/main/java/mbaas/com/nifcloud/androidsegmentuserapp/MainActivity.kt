@@ -10,9 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ListView
 import android.widget.TextView
-import com.nifcloud.mbaas.core.NCMB
-import com.nifcloud.mbaas.core.NCMBObject
-import com.nifcloud.mbaas.core.NCMBUser
+import com.nifcloud.mbaas.core.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var customAdapter: CustomAdapter
@@ -45,10 +43,11 @@ class MainActivity : AppCompatActivity() {
 
         // ログアウト処理
         if (id == R.id.action_logout) {
-            NCMBUser.logoutInBackground { e ->
-                if (e != null) {
-                    //エラー時の処理
-                }
+            var user = NCMBUser()
+            try{
+                user.logout()
+            }
+            catch(e: NCMBException){
             }
             //ユーザーログイン呼ぶ
             val intent = Intent(this, LoginActivity::class.java)
@@ -76,7 +75,8 @@ class MainActivity : AppCompatActivity() {
     fun doCurrentUserInfo() {
 
         // カレントユーザ情報の取得
-        val userInfo = NCMBUser.getCurrentUser()
+        val user = NCMBUser()
+        val userInfo = user.getCurrentUser()
 
         //新規更新
         val _txtNewKey = findViewById<View>(R.id.txtNewKey) as TextView
@@ -84,23 +84,15 @@ class MainActivity : AppCompatActivity() {
         _txtNewKey.text = "" //初期化
         _txtNewValue.text = "" //初期化
 
-        userInfo.fetchInBackground { userObject, e ->
-            if (e != null) {
-                //エラー時の処理
-            } else {
-                //取得成功時の処理
-                //ListViewのAdapter Object生成
-                customAdapter = CustomAdapter(applicationContext, userObject as NCMBObject)
+        try {
+            var rs = userInfo.fetch();
+            customAdapter = CustomAdapter(applicationContext, rs)
+            val listView1 = findViewById<View>(R.id.listViewUser) as ListView
+            listView1.adapter = customAdapter
+            setListviewHeight(listView1)
+        } catch(e:NCMBException){
 
-                //ListViewに設定・表示
-                val listView1 = findViewById<View>(R.id.listViewUser) as ListView
-                listView1.adapter = customAdapter
-
-                //リスト表示用高さを設定
-                setListviewHeight(listView1)
-            }
         }
-
     }
 
     //更新Btn押す処理
@@ -113,18 +105,13 @@ class MainActivity : AppCompatActivity() {
             setDispProcess(strCheckError)
             return
         } else {
-
-            //更新処理開始
-            customAdapter!!.userObject!!.saveInBackground { e ->
-                if (e != null) {
-                    //エラー発生時の処理
-                    setDispProcess("更新失敗しました!\n" + e.message)
-                    //doCurrentUserInfo();
-                } else {
-                    //ユーザー情報を再表示させる
-                    setDispProcess("更新に成功しました。")
-                    doCurrentUserInfo()
-                }
+            try {
+                //更新処理開始
+                customAdapter!!.userObject!!.save();
+                setDispProcess("更新に成功しました。")
+                doCurrentUserInfo()
+            } catch(e:NCMBException){
+                setDispProcess("更新失敗しました!\n" + e.message)
             }
         }
     }

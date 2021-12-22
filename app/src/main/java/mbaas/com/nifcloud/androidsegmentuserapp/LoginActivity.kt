@@ -51,22 +51,21 @@ class LoginActivity : AppCompatActivity() {
         // TODO: Implement your own authentication logic here.
         //ユーザ名とパスワードを指定してログインを実行
         try {
-            NCMBUser.loginInBackground(name, password) { user, e ->
-                if (e != null) {
-                    //エラー時の処理
-                    onLoginFailed()
+            var user = NCMBUser()
+            user.userName = name
+            user.password = password
+
+            user.login(user.userName,user.password)
+            android.os.Handler().postDelayed(
+                {
+                    // On complete call either onLoginSuccess or onLoginFailed
+                    onLoginSuccess()
                     progressDialog.dismiss()
-                } else {
-                    android.os.Handler().postDelayed(
-                            {
-                                // On complete call either onLoginSuccess or onLoginFailed
-                                onLoginSuccess()
-                                progressDialog.dismiss()
-                            }, 3000)
-                }
-            }
+                }, 3000)
         } catch (e: NCMBException) {
-            e.printStackTrace()
+            //エラー時の処理
+            onLoginFailed()
+            progressDialog.dismiss()
         }
 
     }

@@ -10,10 +10,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import mbaas.com.nifcloud.androidsegmentuserapp.Utils.waitFor
 import org.junit.Before
+import org.junit.FixMethodOrder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class SegmentUserUITest {
@@ -48,7 +51,7 @@ class SegmentUserUITest {
     }
 
     @Test
-    fun validate_empty_key() {
+    fun test01_validate_empty_key() {
         edtNewKey!!.perform(typeText(""), closeSoftKeyboard())
         edtNewValue!!.perform(typeText("values"), closeSoftKeyboard())
         btnUpdate!!.check(matches(isDisplayed())).perform(click())
@@ -57,7 +60,7 @@ class SegmentUserUITest {
     }
 
     @Test
-    fun validate_special_key() {
+    fun test02_validate_special_key() {
         edtNewKey!!.perform(typeText("key key"), closeSoftKeyboard())
         edtNewValue!!.perform(typeText("values"), closeSoftKeyboard())
         btnUpdate!!.check(matches(isDisplayed())).perform(click())
@@ -66,7 +69,7 @@ class SegmentUserUITest {
     }
 
     @Test
-    fun validate_same_default_key() {
+    fun test03_validate_same_default_key() {
         edtNewKey!!.perform(typeText("acl"), closeSoftKeyboard())
         edtNewValue!!.perform(typeText("values"), closeSoftKeyboard())
         btnUpdate!!.check(matches(isDisplayed())).perform(click())
@@ -75,7 +78,7 @@ class SegmentUserUITest {
     }
 
     @Test
-    fun updateSuccess() {
+    fun test04_updateSuccess() {
         edtNewKey!!.perform(typeText("keyName"), closeSoftKeyboard())
         edtNewValue!!.perform(typeText("values"), closeSoftKeyboard())
         btnUpdate!!.check(matches(isDisplayed())).perform(click())
